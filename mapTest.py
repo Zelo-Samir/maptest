@@ -1,12 +1,24 @@
 import pandas as pd
 import folium as F
+from geopy.distance import geodesic
+
 longboi = pd.read_csv("LongBoi.csv")
 #53.0765452103364, 8.820692530590472
-map = F.Map(location=(53.08, 8.8), zoom_start=12)
+map = F.Map(location=(55.56, 9.69), zoom_start=8)
 
-F.Marker((53.08, 8.8), popup='Binaur').add_to(map)
+Location1=(56.11, 10.15)
+Location2=(54.82,9.35)
 
-F.PolyLine(locations=[(16.350000, 81.050000), (26.383333, 80.166667)], color='blue').add_to(map)
+F.Marker((56.11, 10.15), popup='Nye Hus').add_to(map)
+F.Marker(location=(54.82,9.35), popup='Gammel Hus').add_to(map)
+
+F.PolyLine(locations=[(56.110000, 10.150000), (54.820000,9.350000)], color='black').add_to(map)
+distance = geodesic(Location1, Location2).kilometers
+
+mid_point = [(Location1[0] + Location2[0]) / 2, (Location1[1] + Location2[1]) / 2]
+F.Marker(location=mid_point,
+         icon=F.DivIcon(html=f'<div style="font-size: 12pt; color: black">{distance:.2f} km</div>')).add_to(map)
+
 map.show_in_browser()
 map.save("Map.html")
 input("wait for exit")
